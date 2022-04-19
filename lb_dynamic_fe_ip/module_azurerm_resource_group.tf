@@ -1,16 +1,12 @@
-locals {
-  resource_group_name     = var.resource_group_name
-  resource_group_location = var.resource_group_location
-}
-
 module "module_azurerm_resource_group" {
+  for_each = local.resource_groups
 
   source = "../azure/rm/azurerm_resource_group"
 
-  name     = local.resource_group_name
-  location = local.resource_group_location
+  name     = each.value.name
+  location = each.value.location
 }
 
-output "resource_group" {
-  value = module.module_azurerm_resource_group
+output "resource_groups" {
+  value = var.enable_module_output ? module.module_azurerm_resource_group[*] : null
 }
