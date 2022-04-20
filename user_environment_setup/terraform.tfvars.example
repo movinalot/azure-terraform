@@ -1,0 +1,11 @@
+group_owners = {
+  "group_name" = {
+    owners = [
+      "user_principal_name_01",
+      "user_principal_name_02"
+    ]
+  }
+}
+
+user_principal_name_ext = "@company.onmicrosoft.com"
+user_password = "Password123!!"

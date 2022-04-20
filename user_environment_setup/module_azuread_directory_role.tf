@@ -1,5 +1,5 @@
 module "module_azuread_directory_role" {
-  for_each = var.directory_role_assignments
+  for_each = local.directory_roles
 
   source = "../azure/ad/azuread_directory_role"
 
@@ -7,5 +7,5 @@ module "module_azuread_directory_role" {
 }
 
 output "directory_roles" {
-  value = module.module_azuread_directory_role[*]
+  value = var.enable_module_output ? module.module_azuread_directory_role[*] : null
 }
