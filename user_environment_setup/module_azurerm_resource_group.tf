@@ -3,7 +3,7 @@ module "module_azurerm_resource_group" {
 
   source = "../azure/rm/azurerm_resource_group"
 
-  name     = format("%s%s", each.value.name, local.user_common["display_name_ext"])
+  name     = format("%s-workshop-sdwan", each.value.name)
   location = each.value.location
 }
 

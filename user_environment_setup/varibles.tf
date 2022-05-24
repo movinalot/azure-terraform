@@ -6,6 +6,11 @@ variable "user_principal_name_ext" {
   description = ""
 }
 
+variable "training_group" {
+  description = ""
+  default     = ""
+}
+
 variable "group_owners" {
   description = ""
 }
