@@ -8,6 +8,8 @@ locals {
     }
   }
 
+  user_role_definition_names = ["Contributor", "User Access Administrator"]
+
   directory_role_members = {
     "Application Administrator" = {
       role_object_id   = module.module_azuread_directory_role["Application Administrator"].directory_role.object_id
@@ -28,6 +30,8 @@ locals {
     }
   }
 
+  resource_group_suffix = "_fortisoar_fortianalyzer_fortigate"
+
   user_common = {
     user_principal_name_ext          = var.user_principal_name_ext
     display_name_ext                 = ""
@@ -35,52 +39,52 @@ locals {
     account_enabled                  = true
     storage_share_name               = "cloudshell"
     storage_share_quota              = 50
-    storage_prefix                   = "setrain"
+    storage_prefix                   = "csetrn"
     storage_account_tier             = "Standard"
     storage_account_replication_type = "LRS"
   }
 
   users = {
-    "student01" = { name = "student01", location = "eastus", group_display_name = var.training_group }
-    "student02" = { name = "student02", location = "eastus", group_display_name = var.training_group }
-    "student03" = { name = "student03", location = "eastus", group_display_name = var.training_group }
-    "student04" = { name = "student04", location = "eastus", group_display_name = var.training_group }
-    "student05" = { name = "student05", location = "eastus", group_display_name = var.training_group }
-    "student06" = { name = "student06", location = "eastus", group_display_name = var.training_group }
-    "student07" = { name = "student07", location = "eastus", group_display_name = var.training_group }
-    "student08" = { name = "student08", location = "eastus", group_display_name = var.training_group }
-    "student09" = { name = "student09", location = "eastus", group_display_name = var.training_group }
-    "student10" = { name = "student10", location = "eastus", group_display_name = var.training_group }
-    "student11" = { name = "student11", location = "eastus", group_display_name = var.training_group }
-    "student12" = { name = "student12", location = "eastus", group_display_name = var.training_group }
-    "student13" = { name = "student13", location = "eastus", group_display_name = var.training_group }
-    "student14" = { name = "student14", location = "eastus", group_display_name = var.training_group }
-    "student15" = { name = "student15", location = "eastus", group_display_name = var.training_group }
-    "student16" = { name = "student16", location = "eastus", group_display_name = var.training_group }
-    "student17" = { name = "student17", location = "eastus", group_display_name = var.training_group }
-    "student18" = { name = "student18", location = "eastus", group_display_name = var.training_group }
-    "student19" = { name = "student19", location = "eastus", group_display_name = var.training_group }
-    "student20" = { name = "student20", location = "eastus", group_display_name = var.training_group }
-    "student21" = { name = "student21", location = "eastus", group_display_name = var.training_group }
-    "student22" = { name = "student22", location = "eastus", group_display_name = var.training_group }
-    "student23" = { name = "student23", location = "eastus", group_display_name = var.training_group }
-    "student24" = { name = "student24", location = "eastus", group_display_name = var.training_group }
-    "student25" = { name = "student25", location = "eastus", group_display_name = var.training_group }
-    "student26" = { name = "student26", location = "eastus", group_display_name = var.training_group }
-    "student27" = { name = "student27", location = "eastus", group_display_name = var.training_group }
-    "student28" = { name = "student28", location = "eastus", group_display_name = var.training_group }
-    "student29" = { name = "student29", location = "eastus", group_display_name = var.training_group }
-    "student30" = { name = "student30", location = "eastus", group_display_name = var.training_group }
-    "student31" = { name = "student31", location = "eastus", group_display_name = var.training_group }
-    "student32" = { name = "student32", location = "eastus", group_display_name = var.training_group }
-    "student33" = { name = "student33", location = "eastus", group_display_name = var.training_group }
-    "student34" = { name = "student34", location = "eastus", group_display_name = var.training_group }
-    "student35" = { name = "student35", location = "eastus", group_display_name = var.training_group }
-    "student36" = { name = "student36", location = "eastus", group_display_name = var.training_group }
-    "student37" = { name = "student37", location = "eastus", group_display_name = var.training_group }
-    "student38" = { name = "student38", location = "eastus", group_display_name = var.training_group }
-    "student39" = { name = "student39", location = "eastus", group_display_name = var.training_group }
-    "student40" = { name = "student40", location = "eastus", group_display_name = var.training_group }
+    "cse01" = { name = "cse01", location = "eastus", group_display_name = var.training_group }
+    "cse02" = { name = "cse02", location = "eastus", group_display_name = var.training_group }
+    # "cse03" = { name = "cse03", location = "eastus", group_display_name = var.training_group }
+    # "cse04" = { name = "cse04", location = "eastus", group_display_name = var.training_group }
+    # "cse05" = { name = "cse05", location = "eastus", group_display_name = var.training_group }
+    # "cse06" = { name = "cse06", location = "eastus", group_display_name = var.training_group }
+    # "cse07" = { name = "cse07", location = "eastus", group_display_name = var.training_group }
+    # "cse08" = { name = "cse08", location = "eastus", group_display_name = var.training_group }
+    # "cse09" = { name = "cse09", location = "eastus", group_display_name = var.training_group }
+    # "cse10" = { name = "cse10", location = "eastus", group_display_name = var.training_group }
+    # "cse11" = { name = "cse11", location = "eastus", group_display_name = var.training_group }
+    # "cse12" = { name = "cse12", location = "eastus", group_display_name = var.training_group }
+    # "cse13" = { name = "cse13", location = "eastus", group_display_name = var.training_group }
+    # "cse14" = { name = "cse14", location = "eastus", group_display_name = var.training_group }
+    # "cse15" = { name = "cse15", location = "eastus", group_display_name = var.training_group }
+    # "cse16" = { name = "cse16", location = "eastus", group_display_name = var.training_group }
+    # "cse17" = { name = "cse17", location = "eastus", group_display_name = var.training_group }
+    # "cse18" = { name = "cse18", location = "eastus", group_display_name = var.training_group }
+    # "cse19" = { name = "cse19", location = "eastus", group_display_name = var.training_group }
+    # "cse20" = { name = "cse20", location = "eastus", group_display_name = var.training_group }
+    # "cse21" = { name = "cse21", location = "eastus", group_display_name = var.training_group }
+    # "cse22" = { name = "cse22", location = "eastus", group_display_name = var.training_group }
+    # "cse23" = { name = "cse23", location = "eastus", group_display_name = var.training_group }
+    # "cse24" = { name = "cse24", location = "eastus", group_display_name = var.training_group }
+    # "cse25" = { name = "cse25", location = "eastus", group_display_name = var.training_group }
+    # "cse26" = { name = "cse26", location = "eastus", group_display_name = var.training_group }
+    # "cse27" = { name = "cse27", location = "eastus", group_display_name = var.training_group }
+    # "cse28" = { name = "cse28", location = "eastus", group_display_name = var.training_group }
+    # "cse29" = { name = "cse29", location = "eastus", group_display_name = var.training_group }
+    # "cse30" = { name = "cse30", location = "eastus", group_display_name = var.training_group }
+    # "cse31" = { name = "cse31", location = "eastus", group_display_name = var.training_group }
+    # "cse32" = { name = "cse32", location = "eastus", group_display_name = var.training_group }
+    # "cse33" = { name = "cse33", location = "eastus", group_display_name = var.training_group }
+    # "cse34" = { name = "cse34", location = "eastus", group_display_name = var.training_group }
+    # "cse35" = { name = "cse35", location = "eastus", group_display_name = var.training_group }
+    # "cse36" = { name = "cse36", location = "eastus", group_display_name = var.training_group }
+    # "cse37" = { name = "cse37", location = "eastus", group_display_name = var.training_group }
+    # "cse38" = { name = "cse38", location = "eastus", group_display_name = var.training_group }
+    # "cse39" = { name = "cse39", location = "eastus", group_display_name = var.training_group }
+    # "cse40" = { name = "cse40", location = "eastus", group_display_name = var.training_group }
     # "student41" = { name = "student41", location = "eastus", group_display_name = var.training_group }
     # "student42" = { name = "student42", location = "eastus", group_display_name = var.training_group }
     # "student43" = { name = "student43", location = "eastus", group_display_name = var.training_group }

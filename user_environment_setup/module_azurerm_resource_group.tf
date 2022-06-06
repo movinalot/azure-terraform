@@ -3,7 +3,7 @@ module "module_azurerm_resource_group" {
 
   source = "../azure/rm/azurerm_resource_group"
 
-  name     = format("%s-workshop-sdwan", each.value.name)
+  name     = format("%s_fortisoar_fortianalyzer_fortigate", each.value.name)
   location = each.value.location
 }
 

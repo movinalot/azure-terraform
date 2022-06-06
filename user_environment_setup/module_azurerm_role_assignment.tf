@@ -15,6 +15,7 @@ module "module_azurerm_role_assignment" {
 output "role_assignments" {
   value = var.enable_module_output ? module.module_azurerm_role_assignment[*] : null
 }
+
 output "user_role_definition_name" {
   value = local.user_role_definition_name
 }
