@@ -10,6 +10,10 @@ locals {
 
   user_role_definition_names = ["Contributor", "User Access Administrator"]
 
+  directory_role_assignments = {
+
+  }
+
   directory_role_members = {
     "Application Administrator" = {
       role_object_id   = module.module_azuread_directory_role["Application Administrator"].directory_role.object_id
