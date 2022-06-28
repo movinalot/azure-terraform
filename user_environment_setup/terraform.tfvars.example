@@ -1,11 +1,6 @@
-group_owners = {
-  "group_name" = {
-    owners = [
-      "user_principal_name_01",
-      "user_principal_name_02"
-    ]
-  }
-}
-
+training_group_owners = [
+  "owner-01@company.onmicrosoft.com",
+  "owner-02@company.onmicrosoft.com"
+]
 user_principal_name_ext = "@company.onmicrosoft.com"
-user_password = "Password123!!"
+user_password = "UserPassword"

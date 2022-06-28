@@ -1,31 +1,19 @@
-variable "user_password" {
-  description = ""
-}
-
 variable "user_principal_name_ext" {
-  description = ""
+  description = "user_principal_name_ext"
+  default = ""
 }
 
-variable "training_group" {
-  description = "Training Group"
-  default     = ""
+variable "user_password" {
+  description = "user_password"
+  default = ""
 }
 
-variable "group_owners" {
-  description = "Training Group Owners"
+variable "training_group_owners" {
+  description = "List of accounts that own the training group"
+  default     = []
 }
 
 variable "enable_module_output" {
   description = "Enable/Disable module output"
   default     = true
-}
-
-variable "user_role_definition_names" {
-  description = "List of roles to assign to users"
-  default     = []
-}
-
-variable "resource_group_suffix" {
-  description = "Resource Group Suffix, prefix is username"
-  default     = ""
 }

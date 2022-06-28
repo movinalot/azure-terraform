@@ -4,7 +4,7 @@ A modularized approach to Terraform for Azure
 
 ## Overview
 
-Requirement: Create many users and assign them to a new group. The group should have associated Azure AD and Subscription Roles. Each user needs a Resource Group and a Storage Account with a File Share.
+Requirement: Create many users and assign them to a new security group. The security group can have associated Azure AD roles. Each user is provisioned a Resource Group with associated Subscription roles and a Storage Account with a File Share.
 
 ## Cloning and Pulling Requirement
 
