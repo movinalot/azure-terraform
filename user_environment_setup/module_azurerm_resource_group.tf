@@ -3,7 +3,7 @@ module "module_azurerm_resource_group" {
 
   source = "../azure/rm/azurerm_resource_group"
 
-  name     = format("%s_%s", each.value.name, local.resource_group_suffix)
+  name     = format("%s-%s", each.value.name, local.resource_group_suffix)
   location = each.value.location
 }
 

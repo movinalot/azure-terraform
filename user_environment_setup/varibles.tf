@@ -1,11 +1,11 @@
 variable "user_principal_name_ext" {
   description = "user_principal_name_ext"
-  default = ""
+  default     = ""
 }
 
 variable "user_password" {
   description = "user_password"
-  default = ""
+  default     = ""
 }
 
 variable "training_group_owners" {

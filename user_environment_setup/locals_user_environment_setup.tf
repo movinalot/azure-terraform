@@ -43,8 +43,8 @@ locals {
   # User roles that will be assigned to the user's Resource Group
   user_role_definition_names = setproduct(values(local.users), ["Contributor", "User Access Administrator"])
 
-  # Resource Group name will be "username_resource_group_suffix"
-  resource_group_suffix = "training"
+  # Resource Group name will be "username-resource_group_suffix"
+  resource_group_suffix = "workshop-sdwan"
 
   # Common User attributes
   user_common = {
@@ -54,7 +54,7 @@ locals {
     account_enabled                  = true
     storage_share_name               = "cloudshell"
     storage_share_quota              = 50
-    storage_prefix                   = "csetrn"
+    storage_prefix                   = "train"
     storage_account_tier             = "Standard"
     storage_account_replication_type = "LRS"
   }
@@ -64,8 +64,8 @@ locals {
     "cse02" = { name = "cse02", location = "eastus", group_display_name = local.training_group }
     "cse03" = { name = "cse03", location = "eastus", group_display_name = local.training_group }
     "cse04" = { name = "cse04", location = "eastus", group_display_name = local.training_group }
-    # "cse05" = { name = "cse05", location = "eastus", group_display_name = local.training_group }
-    # "cse06" = { name = "cse06", location = "eastus", group_display_name = local.training_group }
+    "cse05" = { name = "cse05", location = "eastus", group_display_name = local.training_group }
+    #"cse06" = { name = "cse06", location = "eastus", group_display_name = local.training_group }
     # "cse07" = { name = "cse07", location = "eastus", group_display_name = local.training_group }
     # "cse08" = { name = "cse08", location = "eastus", group_display_name = local.training_group }
     # "cse09" = { name = "cse09", location = "eastus", group_display_name = local.training_group }
