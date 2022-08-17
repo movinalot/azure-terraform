@@ -1,18 +1,22 @@
 module "module_azurerm_role_assignment" {
 
-  count = length(local.user_role_definition_names)
+  for_each = local.user_resource_group_roles_map
 
   source = "../azure/rm/azurerm_role_assignment"
 
-  scope                = module.module_azurerm_resource_group[element(local.user_role_definition_names[count.index], 0).name].resource_group.id
-  role_definition_name = element(local.user_role_definition_names[count.index], 1)
-  principal_id         = module.module_azuread_user[element(local.user_role_definition_names[count.index], 0).name].user.id
+  scope                = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.id
+  role_definition_name = each.value.role_definition_name
+  principal_id         = module.module_azuread_user[each.value.username].user.id
 }
 
 output "role_assignments" {
   value = var.enable_module_output ? module.module_azurerm_role_assignment[*] : null
 }
 
-output "user_role_definition_names" {
-  value = local.user_role_definition_names
+output "user_resource_group_roles_list" {
+  value = var.enable_module_output ? local.user_resource_group_roles_list : null
+}
+
+output "user_resource_group_roles_map" {
+  value = var.enable_module_output ? local.user_resource_group_roles_map : null
 }
