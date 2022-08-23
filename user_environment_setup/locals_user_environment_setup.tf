@@ -1,7 +1,11 @@
 locals {
 
+  bastion_host_support = false
+
   # Training Group name
-  training_group_name            = "CSE_Training"
+  training_group_name = "CSE_Training-multirg"
+
+  # Azure P1 false, P2 true
   security_group_ad_role_support = false
 
   # AD level roles assigned to the Training Group members (the user accounts) 
@@ -43,27 +47,33 @@ locals {
 
   # Resource Groups will be "username-resource_group_suffix" in specified location
   # Set storage to true to create a Storage Account in the Resource Group
-  # Storage Account will be named <username><randomid><resource_group_suffix> up to 15 characters
+  #   Storage Account will be named <username><randomid><resource_group_suffix>
+  #    up to 24 characters, "-" and "_" removed
+  # Set bastion to true to create a bastion host
   resource_groups = [
     {
       suffix   = "training"
       location = "eastus"
       storage  = true
+      bastion  = true
     },
     {
       suffix   = "fgtaa"
       location = "eastus"
-      storage  = true
+      storage  = false
+      bastion  = false
     },
     {
       suffix   = "fgtap"
       location = "eastus"
       storage  = false
+      bastion  = false
     },
     {
       suffix   = "fwb"
       location = "eastus"
       storage  = false
+      bastion  = false
     }
   ]
 
@@ -78,8 +88,29 @@ locals {
       resource_group_name = format("%s-%s", item[0]["name"], item[1]["suffix"]),
       suffix              = item[1]["suffix"],
       location            = item[1]["location"],
-      storage             = item[1]["storage"]
+      storage             = item[1]["storage"],
+      bastion             = item[1]["bastion"],
     }
+  }
+
+  # Subnets for Bastion and utility hosts, name and Adress Prefixes required
+  subnet_names = [["AzureBastionSubnet", ["192.168.100.0/26"]], ["utility", ["192.168.100.64/26"]]]
+
+  # Create a list of User, Resource Group, and Subnet Sets
+  user_resource_group_subnets_list = setproduct(values(local.user_resource_groups_map), local.subnet_names)
+
+  user_resource_groups_subnets_map = {
+    for item in local.user_resource_group_subnets_list :
+    format("%s-%s", item[0]["resource_group_name"], item[1][0]) => {
+      username                = item[0]["username"],
+      resource_group_name     = format("%s-%s", item[0]["username"], item[0]["suffix"]),
+      suffix                  = item[0]["suffix"],
+      location                = item[0]["location"],
+      storage                 = item[0]["storage"],
+      bastion                 = item[0]["bastion"],
+      subnet_name             = item[1][0],
+      subnet_address_prefixes = item[1][1]
+    } if item[0]["bastion"] == true
   }
 
   # User roles that will be assigned to the user's Resource Group
@@ -107,17 +138,22 @@ locals {
     storage_share_quota              = 50
     storage_account_tier             = "Standard"
     storage_account_replication_type = "LRS"
+
+    utility_vnet_name          = "vnet_utility"
+    utility_vnet_address_space = ["192.168.100.0/24"]
+
+    linux_vm_size = "Standard_D2_v3"
   }
 
   users = {
-    #"cse01" = { name = "cse01", group_display_name = local.training_group_name }
-    #"cse02" = { name = "cse02", group_display_name = local.training_group_name }
-    #"cse03" = { name = "cse03", group_display_name = local.training_group_name }
-    #"cse04" = { name = "cse04", group_display_name = local.training_group_name }
-    #"cse05" = { name = "cse05", group_display_name = local.training_group_name }
-    "cse06" = { name = "cse06", group_display_name = local.training_group_name }
+    # "cse01" = { name = "cse01", group_display_name = local.training_group_name }
+    # "cse02" = { name = "cse02", group_display_name = local.training_group_name }
+    # "cse03" = { name = "cse03", group_display_name = local.training_group_name }
+    # "cse04" = { name = "cse04", group_display_name = local.training_group_name }
+    # "cse05" = { name = "cse05", group_display_name = local.training_group_name }
+    # "cse06" = { name = "cse06", group_display_name = local.training_group_name }
     "cse07" = { name = "cse07", group_display_name = local.training_group_name }
-    # "cse08" = { name = "cse08", group_display_name = local.training_group_name }
+    "cse08" = { name = "cse08", group_display_name = local.training_group_name }
     # "cse09" = { name = "cse09", group_display_name = local.training_group_name }
     # "cse10" = { name = "cse10", group_display_name = local.training_group_name }
     # "cse11" = { name = "cse11", group_display_name = local.training_group_name }
