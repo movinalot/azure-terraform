@@ -3,7 +3,7 @@ locals {
   bastion_host_support = false
 
   # Training Group name
-  training_group_name = "CSE_Training-multirg"
+  training_group_name = "TRAINING_GROUP_CHANGE_ME"
 
   # Azure P1 false, P2 true
   security_group_ad_role_support = false
@@ -152,8 +152,8 @@ locals {
     # "cse04" = { name = "cse04", group_display_name = local.training_group_name }
     # "cse05" = { name = "cse05", group_display_name = local.training_group_name }
     # "cse06" = { name = "cse06", group_display_name = local.training_group_name }
-    "cse07" = { name = "cse07", group_display_name = local.training_group_name }
-    "cse08" = { name = "cse08", group_display_name = local.training_group_name }
+    # "cse07" = { name = "cse07", group_display_name = local.training_group_name }
+    # "cse08" = { name = "cse08", group_display_name = local.training_group_name }
     # "cse09" = { name = "cse09", group_display_name = local.training_group_name }
     # "cse10" = { name = "cse10", group_display_name = local.training_group_name }
     # "cse11" = { name = "cse11", group_display_name = local.training_group_name }
