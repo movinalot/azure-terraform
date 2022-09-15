@@ -1,6 +1,8 @@
 locals {
 
-  bastion_host_support = false
+  bastion_host_support       = false
+  per_user_service_principle = false
+  per_user_service_principle_role = "Owner"
 
   # Training Group name
   training_group_name = "TRAINING_GROUP_CHANGE_ME"
