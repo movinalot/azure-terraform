@@ -48,30 +48,30 @@ locals {
       resource_group_name = module.module_azurerm_resource_group[var.resource_group_name].resource_group.name
 
       name             = "subnet_0"
-      vnet_name        = "vnet_1"
-      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_1"].virtual_network.address_space[0], 8, 0)]
+      vnet_name        = module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.name
+      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.address_space[0], 8, 0)]
     }
     "subnet_1" = {
       resource_group_name = module.module_azurerm_resource_group[var.resource_group_name].resource_group.name
 
       name             = "subnet_1"
-      vnet_name        = "vnet_1"
-      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_1"].virtual_network.address_space[0], 8, 1)]
+      vnet_name        = module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.name
+      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.address_space[0], 8, 1)]
     }
-    
+  
     "subnet_2" = {
       resource_group_name = module.module_azurerm_resource_group[var.resource_group_name].resource_group.name
 
       name             = "subnet_2"
-      vnet_name        = "vnet_1"
-      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_1"].virtual_network.address_space[0], 8, 2)]
+      vnet_name        = module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.name
+      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.address_space[0], 8, 2)]
     }
     "subnet_3" = {
       resource_group_name = module.module_azurerm_resource_group[var.resource_group_name].resource_group.name
 
       name             = "subnet_3"
-      vnet_name        = "vnet_1"
-      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_1"].virtual_network.address_space[0], 8, 3)]
+      vnet_name        = module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.name
+      address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.address_space[0], 8, 3)]
     }
   }
 
