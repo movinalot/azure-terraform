@@ -7,5 +7,5 @@ resource "azurerm_role_assignment" "role_assignment_application" {
 }
 
 output "role_assignment_applications" {
-  value = azurerm_role_assignment.role_assignment_application
+  value = var.enable_module_output ? azurerm_role_assignment.role_assignment_application : null
 }

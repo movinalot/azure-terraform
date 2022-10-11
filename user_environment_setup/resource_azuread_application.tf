@@ -11,5 +11,5 @@ resource "azuread_application" "application" {
 }
 
 output "applications" {
-  value = azuread_application.application
+  value = var.enable_module_output ? azuread_application.application : null
 }

@@ -5,6 +5,6 @@ resource "azuread_application_password" "application_password" {
 }
 
 output "application_passwords" {
-  value     = azuread_application_password.application_password
+  value     = var.enable_module_output ? azuread_application_password.application_password : null
   sensitive = true
 }
