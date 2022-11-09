@@ -58,7 +58,7 @@ locals {
       vnet_name        = module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.name
       address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network[var.virtual_network_name].virtual_network.address_space[0], 8, 1)]
     }
-  
+
     "subnet_2" = {
       resource_group_name = module.module_azurerm_resource_group[var.resource_group_name].resource_group.name
 
