@@ -1,5 +1,5 @@
 resource "azuread_service_principal" "service_principal" {
-  for_each = local.per_user_service_principle ? local.users : {}
+  for_each = local.per_user_service_principal ? local.users : {}
 
   application_id               = azuread_application.application[each.value.name].application_id
   app_role_assignment_required = false

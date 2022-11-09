@@ -1,5 +1,5 @@
 resource "azuread_application" "application" {
-  for_each = local.per_user_service_principle ? local.users : {}
+  for_each = local.per_user_service_principal ? local.users : {}
 
   display_name     = format("%s-sp", each.value.name)
   owners           = [module.module_azuread_user[each.value.name].user.id]

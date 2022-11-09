@@ -1,11 +1,11 @@
 locals {
 
-  bastion_host_support       = false
-  per_user_service_principle = false
-  per_user_service_principle_role = "Owner"
+  bastion_host_support            = false
+  per_user_service_principal      = true
+  per_user_service_principal_role = "Owner"
 
   # Training Group name
-  training_group_name = "TRAINING_GROUP_CHANGE_ME"
+  training_group_name = "jmcdonough-training-group"
 
   # Azure P1 false, P2 true
   security_group_ad_role_support = false
@@ -57,24 +57,6 @@ locals {
       suffix   = "training"
       location = "eastus"
       storage  = true
-      bastion  = true
-    },
-    {
-      suffix   = "fgtaa"
-      location = "eastus"
-      storage  = false
-      bastion  = false
-    },
-    {
-      suffix   = "fgtap"
-      location = "eastus"
-      storage  = false
-      bastion  = false
-    },
-    {
-      suffix   = "fwb"
-      location = "eastus"
-      storage  = false
       bastion  = false
     }
   ]
@@ -148,9 +130,9 @@ locals {
   }
 
   users = {
-    # "cse01" = { name = "cse01", group_display_name = local.training_group_name }
-    # "cse02" = { name = "cse02", group_display_name = local.training_group_name }
-    # "cse03" = { name = "cse03", group_display_name = local.training_group_name }
+    "cse01" = { name = "cse01", group_display_name = local.training_group_name }
+    "cse02" = { name = "cse02", group_display_name = local.training_group_name }
+    "cse03" = { name = "cse03", group_display_name = local.training_group_name }
     # "cse04" = { name = "cse04", group_display_name = local.training_group_name }
     # "cse05" = { name = "cse05", group_display_name = local.training_group_name }
     # "cse06" = { name = "cse06", group_display_name = local.training_group_name }

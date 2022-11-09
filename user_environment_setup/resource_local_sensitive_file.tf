@@ -1,7 +1,7 @@
 locals {
   user_credentials_tmp = <<-EOT
 %{for user in module.module_azuread_user~}
-%{if local.per_user_service_principle == true}
+%{if local.per_user_service_principal == true}
 ${format(
   "\"%s\",\"%s\",\"%s\",\"%s\"",
   user["user"].display_name,
@@ -10,7 +10,7 @@ ${format(
   azuread_application_password.application_password[user["user"].display_name].value
   )}
 %{endif}
-%{if local.per_user_service_principle == false}
+%{if local.per_user_service_principal == false}
 ${format(
   "\"%s\",\"%s\"",
   user["user"].display_name,
