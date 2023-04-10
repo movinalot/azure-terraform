@@ -24,6 +24,8 @@ locals {
     }
   }
 
+  virtual_hub_address_prefix = "10.0.0.0/16"
+
   virtual_hubs = {
     "hub_eastus" = {
       resource_group_name = module.module_azurerm_resource_group["csa_vwan_1_hub_eastus"].resource_group.name
@@ -32,7 +34,7 @@ locals {
       name           = "hub_eastus"
       sku            = "Standard"
       virtual_wan_id = module.module_azurerm_virtual_wan["vwan_1"].virtual_wan.id
-      address_prefix = "10.0.0.0/23"
+      address_prefix = cidrsubnet(local.virtual_hub_address_prefix, 7, 0)
     }
     "hub_westus" = {
       resource_group_name = module.module_azurerm_resource_group["csa_vwan_1_hub_westus"].resource_group.name
@@ -41,7 +43,7 @@ locals {
       name           = "hub_westus"
       sku            = "Standard"
       virtual_wan_id = module.module_azurerm_virtual_wan["vwan_1"].virtual_wan.id
-      address_prefix = "10.0.2.0/23"
+      address_prefix = cidrsubnet(local.virtual_hub_address_prefix, 7, 1)
     }
   }
 
