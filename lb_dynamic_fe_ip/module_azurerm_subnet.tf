@@ -1,7 +1,7 @@
 module "module_azurerm_subnet" {
   for_each = local.subnets
 
-  source = "../azure/rm/azurerm_subnet"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_subnet"
 
   resource_group_name = each.value.resource_group_name
 

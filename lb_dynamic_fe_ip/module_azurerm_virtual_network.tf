@@ -1,7 +1,7 @@
 module "module_azurerm_virtual_network" {
   for_each = local.virtual_networks
 
-  source = "../azure/rm/azurerm_virtual_network"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_virtual_network"
 
   resource_group_name = each.value.resource_group_name
   location            = each.value.location

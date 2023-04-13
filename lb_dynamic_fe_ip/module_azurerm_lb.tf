@@ -1,7 +1,7 @@
 module "module_azurerm_lb" {
   for_each = local.lbs
 
-  source = "../azure/rm/azurerm_lb"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_lb"
 
   resource_group_name        = each.value.resource_group_name
   location                   = each.value.location

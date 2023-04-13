@@ -1,7 +1,7 @@
 module "module_azurerm_public_ip" {
   for_each = local.public_ips
 
-  source = "../azure/rm/azurerm_public_ip"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_public_ip"
 
   resource_group_name = each.value.resource_group_name
   location            = each.value.location

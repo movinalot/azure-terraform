@@ -1,7 +1,7 @@
 module "module_azurerm_resource_group" {
   for_each = local.resource_groups
 
-  source = "../azure/rm/azurerm_resource_group"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_resource_group"
 
   name     = each.value.name
   location = each.value.location
