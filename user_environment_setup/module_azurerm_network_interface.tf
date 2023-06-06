@@ -9,7 +9,7 @@ module "module_azurerm_network_interface" {
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location
 
-  name = format("nic_linux_vm_%s_%s", each.value.username, each.value.suffix)
+  name = format("nic_vm_%s_%s", each.value.username, each.value.suffix)
 
   enable_ip_forwarding          = false
   enable_accelerated_networking = false

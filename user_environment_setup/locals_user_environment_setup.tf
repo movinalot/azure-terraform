@@ -1,6 +1,8 @@
 locals {
 
-  bastion_host_support            = false
+  bastion_host_support            = true
+  bastion_host_type               = "windows"
+
   per_user_service_principal      = true
   per_user_service_principal_role = "Owner"
 
@@ -57,7 +59,7 @@ locals {
       suffix   = "training"
       location = "eastus"
       storage  = true
-      bastion  = false
+      bastion  = true
     }
   ]
 
@@ -108,7 +110,8 @@ locals {
     for item in local.user_resource_group_roles_list :
     format("%s-%s", item[0]["resource_group_name"], item[1]) => {
       resource_group_name  = item[0]["resource_group_name"],
-      role_definition_name = item[1], username = item[0]["username"]
+      role_definition_name = item[1],
+      username             = item[0]["username"]
     }
   }
 
@@ -126,13 +129,14 @@ locals {
     utility_vnet_name          = "vnet_utility"
     utility_vnet_address_space = ["192.168.100.0/24"]
 
-    linux_vm_size = "Standard_D2_v3"
+    linux_vm_size   = "Standard_D2_v3"
+    windows_vm_size = "Standard_D2s_v4"
   }
 
   users = {
     "cse01" = { name = "cse01", group_display_name = local.training_group_name }
-    "cse02" = { name = "cse02", group_display_name = local.training_group_name }
-    "cse03" = { name = "cse03", group_display_name = local.training_group_name }
+    # "cse02" = { name = "cse02", group_display_name = local.training_group_name }
+    # "cse03" = { name = "cse03", group_display_name = local.training_group_name }
     # "cse04" = { name = "cse04", group_display_name = local.training_group_name }
     # "cse05" = { name = "cse05", group_display_name = local.training_group_name }
     # "cse06" = { name = "cse06", group_display_name = local.training_group_name }
