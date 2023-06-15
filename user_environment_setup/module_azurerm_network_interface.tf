@@ -17,6 +17,7 @@ module "module_azurerm_network_interface" {
   ip_configurations = [
     {
       name                          = "ipconfig1"
+      primary                       = true
       subnet_id                     = module.module_azurerm_subnet[each.key].subnet.id
       private_ip_address_allocation = "Static"
       private_ip_address            = cidrhost(module.module_azurerm_subnet[each.key].subnet.address_prefixes[0], 4)

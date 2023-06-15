@@ -9,14 +9,14 @@ module "module_azurerm_linux_virtual_machine" {
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location
 
-  name = format("vm-lnx-%s", each.value.username)
+  name = format("vm-bst-%s", each.value.username)
   size = local.user_common["linux_vm_size"]
 
   network_interface_ids = [module.module_azurerm_network_interface[format("%s-%s-utility", each.value.username, each.value.suffix)].network_interface.id]
 
   admin_username = each.value.username
   admin_password = local.user_common["password"]
-  computer_name  = format("vm-lnx-%s", each.value.username)
+  computer_name  = format("vm-bst-%s", each.value.username)
 
   disable_password_authentication = false
 

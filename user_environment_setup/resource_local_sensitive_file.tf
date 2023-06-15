@@ -1,13 +1,18 @@
 locals {
   user_credentials_tmp = <<-EOT
-%{for user in module.module_azuread_user~}
+%{for user in module.module_azurerm_bastion_host~}
 %{if local.per_user_service_principal == true}
 ${format(
-  "\"%s\",\"%s\",\"%s\",\"%s\"",
-  user["user"].display_name,
+  "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+  split("-", user["bastion_host"].resource_group_name)[0],
   var.user_password,
-  azuread_service_principal.service_principal[user["user"].display_name].application_id,
-  azuread_application_password.application_password[user["user"].display_name].value
+  user["bastion_host"].resource_group_name,
+  user["bastion_host"].name,
+  format("vm-bst-%s", split("-", user["bastion_host"].resource_group_name)[0]),
+  azuread_service_principal.service_principal[split("-", user["bastion_host"].resource_group_name)[0]].application_id,
+  azuread_application_password.application_password[split("-", user["bastion_host"].resource_group_name)[0]].value,
+  data.azurerm_subscription.subscription.subscription_id,
+  data.azurerm_subscription.subscription.tenant_id
   )}
 %{endif}
 %{if local.per_user_service_principal == false}
