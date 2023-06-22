@@ -1,7 +1,7 @@
 module "module_azurerm_windows_virtual_machine" {
-  for_each = local.bastion_host_support && local.bastion_host_type == "windows" ? {
+  for_each = local.bastion_host_support ? {
     for name, user in local.user_resource_groups_map : name => user
-    if user.bastion == true
+    if user.bastion == true && user.bastion_host_type == "win"
   } : {}
 
   source = "../azure/rm/azurerm_windows_virtual_machine"
@@ -9,16 +9,16 @@ module "module_azurerm_windows_virtual_machine" {
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location
 
-  name = format("vm-bst-%s", each.value.username)
+  name = format("vm-b%s-%s", each.value.bastion_host_type, each.value.username)
   size = local.user_common["windows_vm_size"]
 
   network_interface_ids = [module.module_azurerm_network_interface[format("%s-%s-utility", each.value.username, each.value.suffix)].network_interface.id]
 
   admin_username = each.value.username
   admin_password = local.user_common["password"]
-  computer_name  = format("vm-bst-%s", each.value.username)
+  computer_name  = format("vm-b%s-%s", each.value.bastion_host_type, each.value.username)
 
-  os_disk_name                 = format("disk-os-win-%s", each.value.username)
+  os_disk_name                 = format("disk-os-%s-%s", each.value.bastion_host_type, each.value.username)
   os_disk_caching              = "ReadWrite"
   os_disk_storage_account_type = "Standard_LRS"
 

@@ -1,13 +1,14 @@
 locals {
 
-  bastion_host_support            = true
-  bastion_host_type               = "windows"
+  userprefix = "user"
+
+  bastion_host_support = true
 
   per_user_service_principal      = true
   per_user_service_principal_role = "Owner"
 
   # Training Group name
-  training_group_name = "jmcdonough-training-group"
+  training_group_name = "${local.userprefix}-training-group"
 
   # Azure P1 false, P2 true
   security_group_ad_role_support = false
@@ -56,11 +57,36 @@ locals {
   # Set bastion to true to create a bastion host
   resource_groups = [
     {
-      suffix   = "training"
-      location = "eastus"
-      storage  = true
-      bastion  = true
-    }
+      suffix            = "training"
+      location          = "eastus"
+      storage           = true
+      bastion           = true
+      bastion_host_type = "lin"
+    },
+    {
+      suffix            = "fortigate"
+      location          = "eastus"
+      storage           = false
+      bastion           = true
+      bastion_host_type = "win"
+    },
+    # Add additonal per user Resource Groups
+    # {
+    #   suffix   = "fortigate"
+    #   location = "eastus"
+    #   storage  = false
+    #   bastion  = true
+    #   bastion_host_type = "win"
+
+    # },
+    # {
+    #   suffix   = "fortiweb"
+    #   location = "eastus"
+    #   storage  = false
+    #   bastion  = false
+    #   bastion_host_type = ""
+
+    # }
   ]
 
   # Create a list of User and Resource Group Sets
@@ -76,6 +102,7 @@ locals {
       location            = item[1]["location"],
       storage             = item[1]["storage"],
       bastion             = item[1]["bastion"],
+      bastion_host_type   = item[1]["bastion_host_type"]
     }
   }
 
@@ -94,6 +121,7 @@ locals {
       location                = item[0]["location"],
       storage                 = item[0]["storage"],
       bastion                 = item[0]["bastion"],
+      bastion_host_type       = item[0]["bastion_host_type"],
       subnet_name             = item[1][0],
       subnet_address_prefixes = item[1][1]
     } if item[0]["bastion"] == true
@@ -129,110 +157,110 @@ locals {
     utility_vnet_name          = "vnet_utility"
     utility_vnet_address_space = ["192.168.100.0/24"]
 
-    linux_vm_size   = "Standard_D2_v3"
+    linux_vm_size   = "Standard_D2s_v4"
     windows_vm_size = "Standard_D2s_v4"
   }
 
   users = {
-    "cse01" = { name = "cse01", group_display_name = local.training_group_name }
-    # "cse02" = { name = "cse02", group_display_name = local.training_group_name }
-    # "cse03" = { name = "cse03", group_display_name = local.training_group_name }
-    # "cse04" = { name = "cse04", group_display_name = local.training_group_name }
-    # "cse05" = { name = "cse05", group_display_name = local.training_group_name }
-    # "cse06" = { name = "cse06", group_display_name = local.training_group_name }
-    # "cse07" = { name = "cse07", group_display_name = local.training_group_name }
-    # "cse08" = { name = "cse08", group_display_name = local.training_group_name }
-    # "cse09" = { name = "cse09", group_display_name = local.training_group_name }
-    # "cse10" = { name = "cse10", group_display_name = local.training_group_name }
-    # "cse11" = { name = "cse11", group_display_name = local.training_group_name }
-    # "cse12" = { name = "cse12", group_display_name = local.training_group_name }
-    # "cse13" = { name = "cse13", group_display_name = local.training_group_name }
-    # "cse14" = { name = "cse14", group_display_name = local.training_group_name }
-    # "cse15" = { name = "cse15", group_display_name = local.training_group_name }
-    # "cse16" = { name = "cse16", group_display_name = local.training_group_name }
-    # "cse17" = { name = "cse17", group_display_name = local.training_group_name }
-    # "cse18" = { name = "cse18", group_display_name = local.training_group_name }
-    # "cse19" = { name = "cse19", group_display_name = local.training_group_name }
-    # "cse20" = { name = "cse20", group_display_name = local.training_group_name }
-    # "cse21" = { name = "cse21", group_display_name = local.training_group_name }
-    # "cse22" = { name = "cse22", group_display_name = local.training_group_name }
-    # "cse23" = { name = "cse23", group_display_name = local.training_group_name }
-    # "cse24" = { name = "cse24", group_display_name = local.training_group_name }
-    # "cse25" = { name = "cse25", group_display_name = local.training_group_name }
-    # "cse26" = { name = "cse26", group_display_name = local.training_group_name }
-    # "cse27" = { name = "cse27", group_display_name = local.training_group_name }
-    # "cse28" = { name = "cse28", group_display_name = local.training_group_name }
-    # "cse29" = { name = "cse29", group_display_name = local.training_group_name }
-    # "cse30" = { name = "cse30", group_display_name = local.training_group_name }
-    # "cse31" = { name = "cse31", group_display_name = local.training_group_name }
-    # "cse32" = { name = "cse32", group_display_name = local.training_group_name }
-    # "cse33" = { name = "cse33", group_display_name = local.training_group_name }
-    # "cse34" = { name = "cse34", group_display_name = local.training_group_name }
-    # "cse35" = { name = "cse35", group_display_name = local.training_group_name }
-    # "cse36" = { name = "cse36", group_display_name = local.training_group_name }
-    # "cse37" = { name = "cse37", group_display_name = local.training_group_name }
-    # "cse38" = { name = "cse38", group_display_name = local.training_group_name }
-    # "cse39" = { name = "cse39", group_display_name = local.training_group_name }
-    # "cse40" = { name = "cse40", group_display_name = local.training_group_name }
-    # "cse41" = { name = "cse41", group_display_name = local.training_group_name }
-    # "cse42" = { name = "cse42", group_display_name = local.training_group_name }
-    # "cse43" = { name = "cse43", group_display_name = local.training_group_name }
-    # "cse44" = { name = "cse44", group_display_name = local.training_group_name }
-    # "cse45" = { name = "cse45", group_display_name = local.training_group_name }
-    # "cse46" = { name = "cse46", group_display_name = local.training_group_name }
-    # "cse47" = { name = "cse47", group_display_name = local.training_group_name }
-    # "cse48" = { name = "cse48", group_display_name = local.training_group_name }
-    # "cse49" = { name = "cse49", group_display_name = local.training_group_name }
-    # "cse50" = { name = "cse50", group_display_name = local.training_group_name }
-    # "cse51" = { name = "cse51", group_display_name = local.training_group_name }
-    # "cse52" = { name = "cse52", group_display_name = local.training_group_name }
-    # "cse53" = { name = "cse53", group_display_name = local.training_group_name }
-    # "cse54" = { name = "cse54", group_display_name = local.training_group_name }
-    # "cse55" = { name = "cse55", group_display_name = local.training_group_name }
-    # "cse56" = { name = "cse56", group_display_name = local.training_group_name }
-    # "cse57" = { name = "cse57", group_display_name = local.training_group_name }
-    # "cse58" = { name = "cse58", group_display_name = local.training_group_name }
-    # "cse59" = { name = "cse59", group_display_name = local.training_group_name }
-    # "cse60" = { name = "cse60", group_display_name = local.training_group_name }
-    # "cse61" = { name = "cse61", group_display_name = local.training_group_name }
-    # "cse62" = { name = "cse62", group_display_name = local.training_group_name }
-    # "cse63" = { name = "cse63", group_display_name = local.training_group_name }
-    # "cse64" = { name = "cse64", group_display_name = local.training_group_name }
-    # "cse65" = { name = "cse65", group_display_name = local.training_group_name }
-    # "cse66" = { name = "cse66", group_display_name = local.training_group_name }
-    # "cse67" = { name = "cse67", group_display_name = local.training_group_name }
-    # "cse68" = { name = "cse68", group_display_name = local.training_group_name }
-    # "cse69" = { name = "cse69", group_display_name = local.training_group_name }
-    # "cse70" = { name = "cse70", group_display_name = local.training_group_name }
-    # "cse71" = { name = "cse71", group_display_name = local.training_group_name }
-    # "cse72" = { name = "cse72", group_display_name = local.training_group_name }
-    # "cse73" = { name = "cse73", group_display_name = local.training_group_name }
-    # "cse74" = { name = "cse74", group_display_name = local.training_group_name }
-    # "cse75" = { name = "cse75", group_display_name = local.training_group_name }
-    # "cse76" = { name = "cse76", group_display_name = local.training_group_name }
-    # "cse77" = { name = "cse77", group_display_name = local.training_group_name }
-    # "cse78" = { name = "cse78", group_display_name = local.training_group_name }
-    # "cse79" = { name = "cse79", group_display_name = local.training_group_name }
-    # "cse80" = { name = "cse80", group_display_name = local.training_group_name }
-    # "cse81" = { name = "cse81", group_display_name = local.training_group_name }
-    # "cse82" = { name = "cse82", group_display_name = local.training_group_name }
-    # "cse83" = { name = "cse83", group_display_name = local.training_group_name }
-    # "cse84" = { name = "cse84", group_display_name = local.training_group_name }
-    # "cse85" = { name = "cse85", group_display_name = local.training_group_name }
-    # "cse86" = { name = "cse86", group_display_name = local.training_group_name }
-    # "cse87" = { name = "cse87", group_display_name = local.training_group_name }
-    # "cse88" = { name = "cse88", group_display_name = local.training_group_name }
-    # "cse89" = { name = "cse89", group_display_name = local.training_group_name }
-    # "cse90" = { name = "cse90", group_display_name = local.training_group_name }
-    # "cse90" = { name = "cse90", group_display_name = local.training_group_name }
-    # "cse91" = { name = "cse91", group_display_name = local.training_group_name }
-    # "cse92" = { name = "cse92", group_display_name = local.training_group_name }
-    # "cse93" = { name = "cse93", group_display_name = local.training_group_name }
-    # "cse94" = { name = "cse94", group_display_name = local.training_group_name }
-    # "cse95" = { name = "cse95", group_display_name = local.training_group_name }
-    # "cse96" = { name = "cse96", group_display_name = local.training_group_name }
-    # "cse97" = { name = "cse97", group_display_name = local.training_group_name }
-    # "cse98" = { name = "cse98", group_display_name = local.training_group_name }
-    # "cse99" = { name = "cse99", group_display_name = local.training_group_name }
+    "${local.userprefix}01" = { name = "${local.userprefix}01", group_display_name = local.training_group_name }
+    "${local.userprefix}02" = { name = "${local.userprefix}02", group_display_name = local.training_group_name }
+    # "${local.userprefix}03" = { name = "${local.userprefix}03", group_display_name = local.training_group_name }
+    # "${local.userprefix}04" = { name = "${local.userprefix}04", group_display_name = local.training_group_name }
+    # "${local.userprefix}05" = { name = "${local.userprefix}05", group_display_name = local.training_group_name }
+    # "${local.userprefix}06" = { name = "${local.userprefix}06", group_display_name = local.training_group_name }
+    # "${local.userprefix}07" = { name = "${local.userprefix}07", group_display_name = local.training_group_name }
+    # "${local.userprefix}08" = { name = "${local.userprefix}08", group_display_name = local.training_group_name }
+    # "${local.userprefix}09" = { name = "${local.userprefix}09", group_display_name = local.training_group_name }
+    # "${local.userprefix}10" = { name = "${local.userprefix}10", group_display_name = local.training_group_name }
+    # "${local.userprefix}11" = { name = "${local.userprefix}11", group_display_name = local.training_group_name }
+    # "${local.userprefix}12" = { name = "${local.userprefix}12", group_display_name = local.training_group_name }
+    # "${local.userprefix}13" = { name = "${local.userprefix}13", group_display_name = local.training_group_name }
+    # "${local.userprefix}14" = { name = "${local.userprefix}14", group_display_name = local.training_group_name }
+    # "${local.userprefix}15" = { name = "${local.userprefix}15", group_display_name = local.training_group_name }
+    # "${local.userprefix}16" = { name = "${local.userprefix}16", group_display_name = local.training_group_name }
+    # "${local.userprefix}17" = { name = "${local.userprefix}17", group_display_name = local.training_group_name }
+    # "${local.userprefix}18" = { name = "${local.userprefix}18", group_display_name = local.training_group_name }
+    # "${local.userprefix}19" = { name = "${local.userprefix}19", group_display_name = local.training_group_name }
+    # "${local.userprefix}20" = { name = "${local.userprefix}20", group_display_name = local.training_group_name }
+    # "${local.userprefix}21" = { name = "${local.userprefix}21", group_display_name = local.training_group_name }
+    # "${local.userprefix}22" = { name = "${local.userprefix}22", group_display_name = local.training_group_name }
+    # "${local.userprefix}23" = { name = "${local.userprefix}23", group_display_name = local.training_group_name }
+    # "${local.userprefix}24" = { name = "${local.userprefix}24", group_display_name = local.training_group_name }
+    # "${local.userprefix}25" = { name = "${local.userprefix}25", group_display_name = local.training_group_name }
+    # "${local.userprefix}26" = { name = "${local.userprefix}26", group_display_name = local.training_group_name }
+    # "${local.userprefix}27" = { name = "${local.userprefix}27", group_display_name = local.training_group_name }
+    # "${local.userprefix}28" = { name = "${local.userprefix}28", group_display_name = local.training_group_name }
+    # "${local.userprefix}29" = { name = "${local.userprefix}29", group_display_name = local.training_group_name }
+    # "${local.userprefix}30" = { name = "${local.userprefix}30", group_display_name = local.training_group_name }
+    # "${local.userprefix}31" = { name = "${local.userprefix}31", group_display_name = local.training_group_name }
+    # "${local.userprefix}32" = { name = "${local.userprefix}32", group_display_name = local.training_group_name }
+    # "${local.userprefix}33" = { name = "${local.userprefix}33", group_display_name = local.training_group_name }
+    # "${local.userprefix}34" = { name = "${local.userprefix}34", group_display_name = local.training_group_name }
+    # "${local.userprefix}35" = { name = "${local.userprefix}35", group_display_name = local.training_group_name }
+    # "${local.userprefix}36" = { name = "${local.userprefix}36", group_display_name = local.training_group_name }
+    # "${local.userprefix}37" = { name = "${local.userprefix}37", group_display_name = local.training_group_name }
+    # "${local.userprefix}38" = { name = "${local.userprefix}38", group_display_name = local.training_group_name }
+    # "${local.userprefix}39" = { name = "${local.userprefix}39", group_display_name = local.training_group_name }
+    # "${local.userprefix}40" = { name = "${local.userprefix}40", group_display_name = local.training_group_name }
+    # "${local.userprefix}41" = { name = "${local.userprefix}41", group_display_name = local.training_group_name }
+    # "${local.userprefix}42" = { name = "${local.userprefix}42", group_display_name = local.training_group_name }
+    # "${local.userprefix}43" = { name = "${local.userprefix}43", group_display_name = local.training_group_name }
+    # "${local.userprefix}44" = { name = "${local.userprefix}44", group_display_name = local.training_group_name }
+    # "${local.userprefix}45" = { name = "${local.userprefix}45", group_display_name = local.training_group_name }
+    # "${local.userprefix}46" = { name = "${local.userprefix}46", group_display_name = local.training_group_name }
+    # "${local.userprefix}47" = { name = "${local.userprefix}47", group_display_name = local.training_group_name }
+    # "${local.userprefix}48" = { name = "${local.userprefix}48", group_display_name = local.training_group_name }
+    # "${local.userprefix}49" = { name = "${local.userprefix}49", group_display_name = local.training_group_name }
+    # "${local.userprefix}50" = { name = "${local.userprefix}50", group_display_name = local.training_group_name }
+    # "${local.userprefix}51" = { name = "${local.userprefix}51", group_display_name = local.training_group_name }
+    # "${local.userprefix}52" = { name = "${local.userprefix}52", group_display_name = local.training_group_name }
+    # "${local.userprefix}53" = { name = "${local.userprefix}53", group_display_name = local.training_group_name }
+    # "${local.userprefix}54" = { name = "${local.userprefix}54", group_display_name = local.training_group_name }
+    # "${local.userprefix}55" = { name = "${local.userprefix}55", group_display_name = local.training_group_name }
+    # "${local.userprefix}56" = { name = "${local.userprefix}56", group_display_name = local.training_group_name }
+    # "${local.userprefix}57" = { name = "${local.userprefix}57", group_display_name = local.training_group_name }
+    # "${local.userprefix}58" = { name = "${local.userprefix}58", group_display_name = local.training_group_name }
+    # "${local.userprefix}59" = { name = "${local.userprefix}59", group_display_name = local.training_group_name }
+    # "${local.userprefix}60" = { name = "${local.userprefix}60", group_display_name = local.training_group_name }
+    # "${local.userprefix}61" = { name = "${local.userprefix}61", group_display_name = local.training_group_name }
+    # "${local.userprefix}62" = { name = "${local.userprefix}62", group_display_name = local.training_group_name }
+    # "${local.userprefix}63" = { name = "${local.userprefix}63", group_display_name = local.training_group_name }
+    # "${local.userprefix}64" = { name = "${local.userprefix}64", group_display_name = local.training_group_name }
+    # "${local.userprefix}65" = { name = "${local.userprefix}65", group_display_name = local.training_group_name }
+    # "${local.userprefix}66" = { name = "${local.userprefix}66", group_display_name = local.training_group_name }
+    # "${local.userprefix}67" = { name = "${local.userprefix}67", group_display_name = local.training_group_name }
+    # "${local.userprefix}68" = { name = "${local.userprefix}68", group_display_name = local.training_group_name }
+    # "${local.userprefix}69" = { name = "${local.userprefix}69", group_display_name = local.training_group_name }
+    # "${local.userprefix}70" = { name = "${local.userprefix}70", group_display_name = local.training_group_name }
+    # "${local.userprefix}71" = { name = "${local.userprefix}71", group_display_name = local.training_group_name }
+    # "${local.userprefix}72" = { name = "${local.userprefix}72", group_display_name = local.training_group_name }
+    # "${local.userprefix}73" = { name = "${local.userprefix}73", group_display_name = local.training_group_name }
+    # "${local.userprefix}74" = { name = "${local.userprefix}74", group_display_name = local.training_group_name }
+    # "${local.userprefix}75" = { name = "${local.userprefix}75", group_display_name = local.training_group_name }
+    # "${local.userprefix}76" = { name = "${local.userprefix}76", group_display_name = local.training_group_name }
+    # "${local.userprefix}77" = { name = "${local.userprefix}77", group_display_name = local.training_group_name }
+    # "${local.userprefix}78" = { name = "${local.userprefix}78", group_display_name = local.training_group_name }
+    # "${local.userprefix}79" = { name = "${local.userprefix}79", group_display_name = local.training_group_name }
+    # "${local.userprefix}80" = { name = "${local.userprefix}80", group_display_name = local.training_group_name }
+    # "${local.userprefix}81" = { name = "${local.userprefix}81", group_display_name = local.training_group_name }
+    # "${local.userprefix}82" = { name = "${local.userprefix}82", group_display_name = local.training_group_name }
+    # "${local.userprefix}83" = { name = "${local.userprefix}83", group_display_name = local.training_group_name }
+    # "${local.userprefix}84" = { name = "${local.userprefix}84", group_display_name = local.training_group_name }
+    # "${local.userprefix}85" = { name = "${local.userprefix}85", group_display_name = local.training_group_name }
+    # "${local.userprefix}86" = { name = "${local.userprefix}86", group_display_name = local.training_group_name }
+    # "${local.userprefix}87" = { name = "${local.userprefix}87", group_display_name = local.training_group_name }
+    # "${local.userprefix}88" = { name = "${local.userprefix}88", group_display_name = local.training_group_name }
+    # "${local.userprefix}89" = { name = "${local.userprefix}89", group_display_name = local.training_group_name }
+    # "${local.userprefix}90" = { name = "${local.userprefix}90", group_display_name = local.training_group_name }
+    # "${local.userprefix}90" = { name = "${local.userprefix}90", group_display_name = local.training_group_name }
+    # "${local.userprefix}91" = { name = "${local.userprefix}91", group_display_name = local.training_group_name }
+    # "${local.userprefix}92" = { name = "${local.userprefix}92", group_display_name = local.training_group_name }
+    # "${local.userprefix}93" = { name = "${local.userprefix}93", group_display_name = local.training_group_name }
+    # "${local.userprefix}94" = { name = "${local.userprefix}94", group_display_name = local.training_group_name }
+    # "${local.userprefix}95" = { name = "${local.userprefix}95", group_display_name = local.training_group_name }
+    # "${local.userprefix}96" = { name = "${local.userprefix}96", group_display_name = local.training_group_name }
+    # "${local.userprefix}97" = { name = "${local.userprefix}97", group_display_name = local.training_group_name }
+    # "${local.userprefix}98" = { name = "${local.userprefix}98", group_display_name = local.training_group_name }
+    # "${local.userprefix}99" = { name = "${local.userprefix}99", group_display_name = local.training_group_name }
   }
 }

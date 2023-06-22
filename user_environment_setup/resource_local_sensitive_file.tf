@@ -8,7 +8,7 @@ ${format(
   var.user_password,
   user["bastion_host"].resource_group_name,
   user["bastion_host"].name,
-  format("vm-bst-%s", split("-", user["bastion_host"].resource_group_name)[0]),
+  format("vm-b%s-%s", split("_", user["bastion_host"].name)[1], split("-", user["bastion_host"].resource_group_name)[0]),
   azuread_service_principal.service_principal[split("-", user["bastion_host"].resource_group_name)[0]].application_id,
   azuread_application_password.application_password[split("-", user["bastion_host"].resource_group_name)[0]].value,
   data.azurerm_subscription.subscription.subscription_id,
