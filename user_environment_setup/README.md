@@ -10,11 +10,13 @@ The user management security group can have associated Azure AD roles, if suppor
 
 Each user is provisioned one of more Resource Groups with zero or more associated roles and a Storage Account with a File Share.
 
-A bastion host and Linux VM is provisioned when
+A bastion host and Linux or Windows VM is provisioned when
 
 - locals `bastion_host_support` is `true`
 - locals resource_groups map attribute `bastion` is true
 - locals resource_groups map attribute `bastion_host_type` is either `lin` for `linux` or `win` for `windows`
+
+> Review `locals_user_environment_setup.tf` for more details
 
 A Service Principal per user is provisioned when
 
