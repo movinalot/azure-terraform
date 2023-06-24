@@ -2,7 +2,9 @@
 
 DEBUG=0 # use 1 for DEBUG output
 
-INPUT=../user_credentials.csv
+OUTPUT="${2:-csv}"
+INPUT="${1:-../user_credentials.csv}"
+
 OLDIFS=$IFS
 IFS=','
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
@@ -52,10 +54,19 @@ EOF
   sleep 5
   BSL_LINK=$(az rest --method post --headers "Content-Type=application/json" --body "${BODY}" --uri "${BSL_URI}/getShareableLinks?api-version=${API_VER}" | jq -r '.value[].bsl')
 
-  jq -n \
-    --arg bsl_link "${BSL_LINK}" \
-    --arg bsl_user "$(echo "${BASTION_HOST_RG}" | cut -d'-' -f 1)" \
-    '{ "usr":$bsl_user, "bsl":$bsl_link }'
+  if [ "${OUTPUT}" == "csv" ]
+  then
+    echo "${USERNAME},\"${BASTION_VM}\",\"${BSL_LINK}\""
+  fi
+
+  if [ "${OUTPUT}" == "json" ]
+  then
+    jq -n \
+      --arg bsl_link "${BSL_LINK}" \
+      --arg bsl_vm_name "${BASTION_VM}" \
+      --arg bsl_user "$(echo "${BASTION_HOST_RG}" | cut -d'-' -f 1)" \
+      '{ "user":$bsl_user, "name":$bsl_vm_name, "link":$bsl_link }'
+  fi
 
   az logout
 
