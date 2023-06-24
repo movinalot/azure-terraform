@@ -61,22 +61,16 @@ locals {
       location          = "eastus"
       storage           = true
       bastion           = true
-      bastion_host_type = "lin"
-    },
-    {
-      suffix            = "fortigate"
-      location          = "eastus"
-      storage           = false
-      bastion           = true
       bastion_host_type = "win"
     },
+
     # Add additonal per user Resource Groups
     # {
     #   suffix   = "fortigate"
     #   location = "eastus"
     #   storage  = false
     #   bastion  = true
-    #   bastion_host_type = "win"
+    #   bastion_host_type = "lin"
 
     # },
     # {
@@ -162,8 +156,8 @@ locals {
   }
 
   users = {
-    "${local.userprefix}01" = { name = "${local.userprefix}01", group_display_name = local.training_group_name }
-    "${local.userprefix}02" = { name = "${local.userprefix}02", group_display_name = local.training_group_name }
+    # "${local.userprefix}01" = { name = "${local.userprefix}01", group_display_name = local.training_group_name }
+    # "${local.userprefix}02" = { name = "${local.userprefix}02", group_display_name = local.training_group_name }
     # "${local.userprefix}03" = { name = "${local.userprefix}03", group_display_name = local.training_group_name }
     # "${local.userprefix}04" = { name = "${local.userprefix}04", group_display_name = local.training_group_name }
     # "${local.userprefix}05" = { name = "${local.userprefix}05", group_display_name = local.training_group_name }
