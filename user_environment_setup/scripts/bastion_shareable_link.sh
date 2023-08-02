@@ -56,7 +56,7 @@ EOF
 
   if [ "${OUTPUT}" == "csv" ]
   then
-    echo "${USERNAME},\"${BASTION_VM}\",\"${BSL_LINK}\""
+    echo "${USERNAME},${PASSWORD},\"${BASTION_VM}\",\"${BSL_LINK}\""
   fi
 
   if [ "${OUTPUT}" == "json" ]

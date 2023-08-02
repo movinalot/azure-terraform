@@ -10,7 +10,7 @@ module "module_azurerm_bastion_host" {
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location
 
-  name                   = format("bastion_%s_%s_%s",each.value.bastion_host_type, each.value.username, each.value.suffix)
+  name                   = format("bastion_%s_%s_%s", each.value.bastion_host_type, each.value.username, each.value.suffix)
   sku                    = "Standard"
   shareable_link_enabled = true
 

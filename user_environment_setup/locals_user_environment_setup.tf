@@ -137,6 +137,41 @@ locals {
     }
   }
 
+  # nsg rules
+  nsg_rules = [
+    ["nsgsr-http", "1010", "Inbound", "Allow", "Tcp", "*", "80", "*", "*"],
+    ["nsgsr-https", "1020", "Inbound", "Allow", "Tcp", "*", "443", "*", "*"],
+    ["nsgsr-rdp", "1000", "Inbound", "Allow", "Tcp", "*", "3389", "*", "*"],
+    ["nsgsr-ssh", "1030", "Inbound", "Allow", "Tcp", "*", "22", "*", "*"],
+    ["nsgsr-winrm", "1040", "Inbound", "Allow", "Tcp", "*", "5985", "*", "*"],
+    ["nsgsr-winrms", "1050", "Inbound", "Allow", "Tcp", "*", "5986", "*", "*"],
+    ["nsgsr-allout", "1000", "Outbound", "Allow", "*", "*", "*", "*", "*"]
+  ]
+
+  # Create a list of User, Resource Group, and Subnet Sets
+  user_resource_group_nsgsr_list = setproduct(values(local.user_resource_groups_map), local.nsg_rules)
+
+  user_resource_groups_nsgsr_map = {
+    for item in local.user_resource_group_nsgsr_list :
+    format("%s-%s", item[0]["resource_group_name"], item[1][0]) => {
+      username                   = item[0]["username"],
+      resource_group_name        = format("%s-%s", item[0]["username"], item[0]["suffix"]),
+      suffix                     = item[0]["suffix"],
+      location                   = item[0]["location"],
+      storage                    = item[0]["storage"],
+      bastion                    = item[0]["bastion"],
+      bastion_host_type          = item[0]["bastion_host_type"],
+      name                       = item[1][0],
+      priority                   = item[1][1],
+      direction                  = item[1][2],
+      access                     = item[1][3],
+      protocol                   = item[1][4],
+      source_port_range          = item[1][5],
+      destination_port_range     = item[1][6],
+      source_address_prefix      = item[1][7],
+      destination_address_prefix = item[1][8]
+    } if item[0]["bastion"] == true
+  }
   # Common User attributes
   user_common = {
     user_principal_name_ext          = var.user_principal_name_ext

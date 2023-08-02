@@ -33,7 +33,27 @@ module "module_azurerm_windows_virtual_machine" {
   source_image_reference_sku       = "win10-22h2-pro-g2"
   source_image_reference_version   = "latest"
 
+  custom_data = filebase64("./scripts/winclient_init.ps1")
+
   license_type = "Windows_Client"
+}
+
+resource "azurerm_virtual_machine_extension" "virtual_machine_extension" {
+  for_each = local.bastion_host_support ? {
+    for name, user in local.user_resource_groups_map : name => user
+    if user.bastion == true && user.bastion_host_type == "win"
+  } : {}
+
+  name                 = "cloudinit"
+  virtual_machine_id   = module.module_azurerm_windows_virtual_machine[each.value.resource_group_name].windows_virtual_machine.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
+  settings             = <<SETTINGS
+    {
+        "commandToExecute": "powershell -ExecutionPolicy unrestricted -NoProfile -NonInteractive -command \"cp c:/azuredata/customdata.bin c:/azuredata/forticlientinstall.ps1; c:/azuredata/forticlientinstall.ps1\""
+    }
+    SETTINGS
 }
 
 output "windows_virtual_machines" {

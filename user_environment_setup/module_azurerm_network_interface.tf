@@ -21,7 +21,7 @@ module "module_azurerm_network_interface" {
       subnet_id                     = module.module_azurerm_subnet[each.key].subnet.id
       private_ip_address_allocation = "Static"
       private_ip_address            = cidrhost(module.module_azurerm_subnet[each.key].subnet.address_prefixes[0], 4)
-      public_ip_address_id          = null
+      public_ip_address_id          = try(module.module_azurerm_public_ip_service_access[each.value.resource_group_name].public_ip.id, false) != false ? module.module_azurerm_public_ip_service_access[each.value.resource_group_name].public_ip.id : null
     }
   ]
 }
