@@ -29,6 +29,6 @@ user_credentials = replace(local.user_credentials_tmp, "/(?m)(?s)(^[\r\n])/", ""
 }
 
 resource "local_sensitive_file" "file" {
-  filename = "${path.module}/user_credentials.csv"
+  filename = "${path.module}/${terraform.workspace}_credentials.csv"
   content  = local.user_credentials
 }

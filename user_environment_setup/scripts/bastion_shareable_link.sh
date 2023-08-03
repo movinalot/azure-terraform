@@ -3,7 +3,7 @@
 DEBUG=0 # use 1 for DEBUG output
 
 OUTPUT="${2:-csv}"
-INPUT="${1:-../user_credentials.csv}"
+INPUT="${1:-../default_credentials.csv}"
 
 OLDIFS=$IFS
 IFS=','

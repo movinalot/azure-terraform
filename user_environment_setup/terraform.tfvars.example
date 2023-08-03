@@ -3,4 +3,10 @@ training_group_owners = [
   "owner-02@company.onmicrosoft.com"
 ]
 user_principal_name_ext = "@company.onmicrosoft.com"
+
 user_password = "UserPassword"
+
+user_prefix = "user-"
+
+user_count = 4
+user_start = 1

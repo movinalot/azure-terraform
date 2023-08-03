@@ -30,3 +30,4 @@ override.tf.json
 .vscode
 backend.tf
 terraform.tfvars
+*_credentials.csv
