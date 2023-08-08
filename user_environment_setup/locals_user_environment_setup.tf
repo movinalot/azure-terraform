@@ -4,6 +4,8 @@ locals {
 
   bastion_host_support = true
 
+  squential_vnet_address_space = true
+
   per_user_service_principal      = true
   per_user_service_principal_role = "Owner"
 
@@ -96,12 +98,13 @@ locals {
       location            = item[1]["location"],
       storage             = item[1]["storage"],
       bastion             = item[1]["bastion"],
-      bastion_host_type   = item[1]["bastion_host_type"]
+      bastion_host_type   = item[1]["bastion_host_type"],
+      utility_vnet_address_space = local.squential_vnet_address_space ? [format("192.168.%s.0/24", trim(item[0]["name"], var.user_prefix))] : ["192.168.100.0/24"]
     }
   }
 
   # Subnets for Bastion and utility hosts, name and Adress Prefixes required
-  subnet_names = [["AzureBastionSubnet", ["192.168.100.0/26"]], ["utility", ["192.168.100.64/26"]]]
+  subnet_names = [["AzureBastionSubnet", "128/25"], ["utility", "0/25"]]
 
   # Create a list of User, Resource Group, and Subnet Sets
   user_resource_group_subnets_list = setproduct(values(local.user_resource_groups_map), local.subnet_names)
@@ -117,7 +120,7 @@ locals {
       bastion                 = item[0]["bastion"],
       bastion_host_type       = item[0]["bastion_host_type"],
       subnet_name             = item[1][0],
-      subnet_address_prefixes = item[1][1]
+      subnet_address_prefixes = local.squential_vnet_address_space ? [format("192.168.%s.%s", trim(item[0]["username"], var.user_prefix), item[1][1])] : [format("192.168.100.%s",item[1][1])]
     } if item[0]["bastion"] == true
   }
 
@@ -196,7 +199,6 @@ locals {
     storage_account_replication_type = "LRS"
 
     utility_vnet_name          = "vnet_utility"
-    utility_vnet_address_space = ["192.168.100.0/24"]
 
     linux_vm_size   = "Standard_D2s_v4"
     windows_vm_size = "Standard_D2s_v4"
