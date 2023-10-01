@@ -4,7 +4,9 @@ module "module_azurerm_windows_virtual_machine" {
     if user.bastion == true && user.bastion_host_type == "win"
   } : {}
 
-  source = "../azure/rm/azurerm_windows_virtual_machine"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_windows_virtual_machine"
+
+  #source = "../azure/rm/azurerm_windows_virtual_machine"
 
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location

@@ -4,7 +4,9 @@ module "module_azurerm_network_security_rule" {
     if user.bastion == true
   } : {}
 
-  source = "../azure/rm/azurerm_network_security_rule"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_network_security_rule"
+
+  #source = "../azure/rm/azurerm_network_security_rule"
 
   resource_group_name = each.value.resource_group_name
 

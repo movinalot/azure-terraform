@@ -4,7 +4,9 @@ module "module_azurerm_storage_account" {
     if user.storage == true
   }
 
-  source = "../azure/rm/azurerm_storage_account"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_storage_account"
+
+  #source = "../azure/rm/azurerm_storage_account"
 
   resource_group_name      = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location                 = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location

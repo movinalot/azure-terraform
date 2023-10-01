@@ -4,7 +4,9 @@ module "module_azurerm_storage_share" {
     if user.storage == true
   }
 
-  source = "../azure/rm/azurerm_storage_share"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_storage_share"
+
+  #source = "../azure/rm/azurerm_storage_share"
 
   name                 = local.user_common["storage_share_name"]
   quota                = local.user_common["storage_share_quota"]

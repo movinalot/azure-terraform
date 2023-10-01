@@ -4,7 +4,9 @@ module "module_azurerm_subnet" {
     if user.bastion == true
   } : {}
 
-  source = "../azure/rm/azurerm_subnet"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_subnet"
+
+  #source = "../azure/rm/azurerm_subnet"
 
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
 

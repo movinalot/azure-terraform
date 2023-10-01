@@ -31,3 +31,4 @@ override.tf.json
 backend.tf
 terraform.tfvars
 *_credentials.csv
+test_*

@@ -4,7 +4,9 @@ module "module_azurerm_subnet_network_security_group_association" {
     if user.bastion == true
   } : {}
 
-  source = "../azure/rm/azurerm_subnet_network_security_group_association"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_subnet_network_security_group_association"
+
+  #source = "../azure/rm/azurerm_subnet_network_security_group_association"
 
   subnet_id                 = module.module_azurerm_subnet[format("%s-%s-utility", each.value.username, each.value.suffix)].subnet.id
   network_security_group_id = module.module_azurerm_network_security_group[format("%s-%s", each.value.username, each.value.suffix)].network_security_group.id

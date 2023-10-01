@@ -5,7 +5,9 @@ module "module_azurerm_bastion_host" {
     if user.subnet_name == "AzureBastionSubnet"
   } : {}
 
-  source = "../azure/rm/azurerm_bastion_host"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_bastion_host"
+
+  #source = "../azure/rm/azurerm_bastion_host"
 
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location

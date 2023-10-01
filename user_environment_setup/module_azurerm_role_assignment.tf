@@ -1,8 +1,9 @@
 module "module_azurerm_role_assignment" {
-
   for_each = local.user_resource_group_roles_map
 
-  source = "../azure/rm/azurerm_role_assignment"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_role_assignment"
+
+  #source = "../azure/rm/azurerm_role_assignment"
 
   scope                = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.id
   role_definition_name = each.value.role_definition_name

@@ -1,7 +1,9 @@
 module "module_azuread_group" {
   for_each = local.groups
 
-  source = "../azure/ad/azuread_group"
+  source = "git::https://github.com/movinalot/azure.git//ad/azuread_group"
+
+  #source = "../azure/ad/azuread_group"
 
   display_name       = each.value.display_name
   owners             = each.value.owners

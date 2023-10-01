@@ -4,7 +4,9 @@ module "module_azurerm_network_interface" {
     if user.subnet_name == "utility"
   } : {}
 
-  source = "../azure/rm/azurerm_network_interface"
+  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_network_interface"
+
+  #source = "../azure/rm/azurerm_network_interface"
 
   resource_group_name = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.name
   location            = module.module_azurerm_resource_group[each.value.resource_group_name].resource_group.location

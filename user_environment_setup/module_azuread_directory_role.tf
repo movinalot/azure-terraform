@@ -1,8 +1,9 @@
 module "module_azuread_directory_role" {
-
   for_each = local.security_group_ad_role_support ? local.directory_roles : {}
 
-  source = "../azure/ad/azuread_directory_role"
+  source = "git::https://github.com/movinalot/azure.git//ad/azuread_directory_role"
+
+  #source = "../azure/ad/azuread_directory_role"
 
   display_name = each.value.display_name
 }

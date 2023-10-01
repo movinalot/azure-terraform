@@ -2,10 +2,13 @@ locals {
 
   user_prefix = var.user_prefix
 
-  bastion_host_support = true
+  # Should a Bastion host be created per user
+  bastion_host_support = false
 
-  squential_vnet_address_space = true
+  # Should the Bastion host virtual network be the same address space for each user or sequential 
+  squential_vnet_address_space = false
 
+  # Should a Service Principal be created per user
   per_user_service_principal      = true
   per_user_service_principal_role = "Owner"
 
@@ -60,9 +63,9 @@ locals {
   resource_groups = [
     {
       suffix            = "training"
-      location          = "centralus"
-      storage           = true
-      bastion           = true
+      location          = "eastus"
+      storage           = false
+      bastion           = false
       bastion_host_type = "win"
     },
 
@@ -71,8 +74,8 @@ locals {
     #   suffix   = "fortigate"
     #   location = "eastus"
     #   storage  = false
-    #   bastion  = true
-    #   bastion_host_type = "lin"
+    #   bastion  = false
+    #   bastion_host_type = ""
 
     # },
     # {
@@ -92,13 +95,13 @@ locals {
   user_resource_groups_map = {
     for item in local.user_resource_groups_list :
     format("%s-%s", item[0]["name"], item[1]["suffix"]) => {
-      username            = item[0]["name"],
-      resource_group_name = format("%s-%s", item[0]["name"], item[1]["suffix"]),
-      suffix              = item[1]["suffix"],
-      location            = item[1]["location"],
-      storage             = item[1]["storage"],
-      bastion             = item[1]["bastion"],
-      bastion_host_type   = item[1]["bastion_host_type"],
+      username                   = item[0]["name"],
+      resource_group_name        = format("%s-%s", item[0]["name"], item[1]["suffix"]),
+      suffix                     = item[1]["suffix"],
+      location                   = item[1]["location"],
+      storage                    = item[1]["storage"],
+      bastion                    = item[1]["bastion"],
+      bastion_host_type          = item[1]["bastion_host_type"],
       utility_vnet_address_space = local.squential_vnet_address_space ? [format("192.168.%s.0/24", trim(item[0]["name"], var.user_prefix))] : ["192.168.100.0/24"]
     }
   }
@@ -120,7 +123,7 @@ locals {
       bastion                 = item[0]["bastion"],
       bastion_host_type       = item[0]["bastion_host_type"],
       subnet_name             = item[1][0],
-      subnet_address_prefixes = local.squential_vnet_address_space ? [format("192.168.%s.%s", trim(item[0]["username"], var.user_prefix), item[1][1])] : [format("192.168.100.%s",item[1][1])]
+      subnet_address_prefixes = local.squential_vnet_address_space ? [format("192.168.%s.%s", trim(item[0]["username"], var.user_prefix), item[1][1])] : [format("192.168.100.%s", item[1][1])]
     } if item[0]["bastion"] == true
   }
 
@@ -198,7 +201,7 @@ locals {
     storage_account_tier             = "Standard"
     storage_account_replication_type = "LRS"
 
-    utility_vnet_name          = "vnet_utility"
+    utility_vnet_name = "vnet_utility"
 
     linux_vm_size   = "Standard_D2s_v4"
     windows_vm_size = "Standard_D2s_v4"
