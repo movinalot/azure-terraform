@@ -51,7 +51,7 @@ EOF
   API_VER="2022-11-01"
 
   az rest --method post --headers "Content-Type=application/json"  --body "${BODY}" --uri "${BSL_URI}/createShareableLinks?api-version=${API_VER}"
-  sleep 5
+  sleep 10
   BSL_LINK=$(az rest --method post --headers "Content-Type=application/json" --body "${BODY}" --uri "${BSL_URI}/getShareableLinks?api-version=${API_VER}" | jq -r '.value[].bsl')
 
   if [ "${OUTPUT}" == "csv" ]

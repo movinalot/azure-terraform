@@ -64,7 +64,7 @@ locals {
     {
       suffix            = "training"
       location          = "eastus"
-      storage           = false
+      storage           = true
       bastion           = false
       bastion_host_type = "win"
     },
