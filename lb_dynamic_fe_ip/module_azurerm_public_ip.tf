@@ -1,7 +1,5 @@
-module "module_azurerm_public_ip" {
+resource "azurerm_public_ip" "public_ip" {
   for_each = local.public_ips
-
-  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_public_ip"
 
   resource_group_name = each.value.resource_group_name
   location            = each.value.location
@@ -12,5 +10,5 @@ module "module_azurerm_public_ip" {
 }
 
 output "public_ips" {
-  value = var.enable_module_output ? module.module_azurerm_public_ip[*] : null
+  value = var.enable_output ? azurerm_public_ip.public_ip[*] : null
 }

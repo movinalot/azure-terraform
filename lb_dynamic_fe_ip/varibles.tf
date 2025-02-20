@@ -22,7 +22,7 @@ variable "virtual_network_address_space" {
   default     = []
 }
 
-variable "enable_module_output" {
+variable "enable_output" {
   description = "Enable/Disable module output"
   default     = true
 }

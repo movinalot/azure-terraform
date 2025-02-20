@@ -1,7 +1,5 @@
-module "module_azurerm_virtual_network" {
+resource "azurerm_virtual_network" "virtual_network" {
   for_each = local.virtual_networks
-
-  source = "git::https://github.com/movinalot/azure.git//rm/azurerm_virtual_network"
 
   resource_group_name = each.value.resource_group_name
   location            = each.value.location
@@ -10,6 +8,7 @@ module "module_azurerm_virtual_network" {
   address_space = each.value.address_space
 }
 
+
 output "virtual_networks" {
-  value = var.enable_module_output ? module.module_azurerm_virtual_network[*] : null
+  value = var.enable_output ? azurerm_virtual_network.virtual_network[*] : null
 }
