@@ -32,3 +32,4 @@ backend.tf
 terraform.tfvars
 *_credentials.csv
 test_*
+.terraform
