@@ -6,10 +6,10 @@ locals {
   bastion_host_support = false
 
   # Should the Bastion host virtual network be the same address space for each user or sequential 
-  squential_vnet_address_space = false
+  sequential_vnet_address_space = false
 
   # Should a Service Principal be created per user
-  per_user_service_principal      = true
+  per_user_service_principal      = false
   per_user_service_principal_role = "Owner"
 
   # Training Group name
@@ -18,7 +18,7 @@ locals {
   # Azure P1 false, P2 true
   security_group_ad_role_support = false
 
-  # AD level roles assigned to the Training Group members (the user accounts) 
+  # Entra ID roles assigned to the Training Group members (the user accounts) 
   directory_roles = {
     "Application Administrator" = {
       display_name = "Application Administrator"
@@ -28,15 +28,15 @@ locals {
     }
   }
 
-  # AD level roles Group association
+  # Entra ID roles Group association
   directory_role_assignments = {
     "Application Administrator" = {
-      role_id             = local.security_group_ad_role_support ? module.module_azuread_directory_role["Application Administrator"].directory_role.object_id : ""
-      principal_object_id = local.security_group_ad_role_support ? module.module_azuread_group[local.training_group_name].group.object_id : ""
+      role_id             = local.security_group_ad_role_support ? azuread_directory_role.directory_role["Application Administrator"].object_id : ""
+      principal_object_id = local.security_group_ad_role_support ? azuread_group.group[local.training_group_name].object_id : ""
     }
     "Global Reader" = {
-      role_id             = local.security_group_ad_role_support ? module.module_azuread_directory_role["Global Reader"].directory_role.object_id : ""
-      principal_object_id = local.security_group_ad_role_support ? module.module_azuread_group[local.training_group_name].group.object_id : ""
+      role_id             = local.security_group_ad_role_support ? azuread_directory_role.directory_role["Global Reader"].object_id : ""
+      principal_object_id = local.security_group_ad_role_support ? azuread_group.group[local.training_group_name].object_id : ""
     }
   }
 
@@ -64,12 +64,12 @@ locals {
     {
       suffix            = "training"
       location          = "eastus"
-      storage           = true
+      storage           = false
       bastion           = false
       bastion_host_type = "win"
     },
 
-    # Add additonal per user Resource Groups
+    # Add additional per user Resource Groups
     # {
     #   suffix   = "fortigate"
     #   location = "eastus"
@@ -102,11 +102,11 @@ locals {
       storage                    = item[1]["storage"],
       bastion                    = item[1]["bastion"],
       bastion_host_type          = item[1]["bastion_host_type"],
-      utility_vnet_address_space = local.squential_vnet_address_space ? [format("192.168.%s.0/24", trim(item[0]["name"], var.user_prefix))] : ["192.168.100.0/24"]
+      utility_vnet_address_space = local.sequential_vnet_address_space ? [format("192.168.%s.0/24", trim(item[0]["name"], var.user_prefix))] : ["192.168.100.0/24"]
     }
   }
 
-  # Subnets for Bastion and utility hosts, name and Adress Prefixes required
+  # Subnets for Bastion and utility hosts, name and Address Prefixes required
   subnet_names = [["AzureBastionSubnet", "128/25"], ["utility", "0/25"]]
 
   # Create a list of User, Resource Group, and Subnet Sets
@@ -123,7 +123,7 @@ locals {
       bastion                 = item[0]["bastion"],
       bastion_host_type       = item[0]["bastion_host_type"],
       subnet_name             = item[1][0],
-      subnet_address_prefixes = local.squential_vnet_address_space ? [format("192.168.%s.%s", trim(item[0]["username"], var.user_prefix), item[1][1])] : [format("192.168.100.%s", item[1][1])]
+      subnet_address_prefixes = local.sequential_vnet_address_space ? [format("192.168.%s.%s", trim(item[0]["username"], var.user_prefix), item[1][1])] : [format("192.168.100.%s", item[1][1])]
     } if item[0]["bastion"] == true
   }
 

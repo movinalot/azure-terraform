@@ -1,7 +1,7 @@
 locals {
   user_credentials_tmp = <<-EOT
 %{if local.bastion_host_support == true}
-%{for user in module.module_azurerm_bastion_host~}
+%{for user in azurerm_bastion_host.bastion_host[*]~}
 %{if local.per_user_service_principal == true}
 ${format(
   "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
@@ -26,22 +26,22 @@ ${format(
 %{endfor~}
 %{endif}
 %{if local.bastion_host_support == false}
-%{for user in module.module_azuread_user~}
+%{for user in azuread_user.user~}
 %{if local.per_user_service_principal == true}
 ${format(
   "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
-  user["user"].display_name,
+  user.display_name,
   var.user_password,
   data.azurerm_subscription.subscription.tenant_id,
   data.azurerm_subscription.subscription.subscription_id,
-  azuread_service_principal.service_principal[user["user"].display_name].application_id,
-  azuread_application_password.application_password[user["user"].display_name].value
+  azuread_service_principal.service_principal[user.display_name].application_id,
+  azuread_application_password.application_password[user.display_name].value
   )}
 %{endif}
 %{if local.per_user_service_principal == false}
 ${format(
   "\"%s\",\"%s\"",
-  user["user"].display_name,
+  user.display_name,
   var.user_password
 )}
 %{endif}
