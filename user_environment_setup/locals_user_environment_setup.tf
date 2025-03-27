@@ -3,13 +3,13 @@ locals {
   user_prefix = var.user_prefix
 
   # Should a Bastion host be created per user
-  bastion_host_support = false
+  bastion_host_support = true
 
   # Should the Bastion host virtual network be the same address space for each user or sequential 
-  sequential_vnet_address_space = false
+  sequential_vnet_address_space = true
 
   # Should a Service Principal be created per user
-  per_user_service_principal      = false
+  per_user_service_principal      = true
   per_user_service_principal_role = "Owner"
 
   # Training Group name
@@ -60,13 +60,15 @@ locals {
   #   Storage Account will be named <username><randomid><resource_group_suffix>
   #    up to 24 characters, "-" and "_" removed
   # Set bastion to true to create a bastion host
+  # Set bastion_host_type to "lin" for Linux or "win" for Windows
+
   resource_groups = [
     {
       suffix            = "training"
       location          = "eastus"
       storage           = false
-      bastion           = false
-      bastion_host_type = "win"
+      bastion           = true
+      bastion_host_type = "win" # "lin" or "win"
     },
 
     # Add additional per user Resource Groups
@@ -100,9 +102,9 @@ locals {
       suffix                     = item[1]["suffix"],
       location                   = item[1]["location"],
       storage                    = item[1]["storage"],
-      bastion                    = item[1]["bastion"],
-      bastion_host_type          = item[1]["bastion_host_type"],
-      utility_vnet_address_space = local.sequential_vnet_address_space ? [format("192.168.%s.0/24", trim(item[0]["name"], var.user_prefix))] : ["192.168.100.0/24"]
+      bastion                    = local.bastion_host_support ? item[1]["bastion"] : false,
+      bastion_host_type          = local.bastion_host_support ? item[1]["bastion_host_type"] : "",
+      utility_vnet_address_space = local.bastion_host_support ? (local.sequential_vnet_address_space ? [format("192.168.%s.0/24", trim(item[0]["name"], var.user_prefix))] : ["192.168.100.0/24"]) : [""]
     }
   }
 

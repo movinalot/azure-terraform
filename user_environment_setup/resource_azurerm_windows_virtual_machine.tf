@@ -8,14 +8,14 @@ resource "azurerm_windows_virtual_machine" "windows_virtual_machine" {
   resource_group_name = azurerm_resource_group.resource_group[each.value.resource_group_name].name
   location            = azurerm_resource_group.resource_group[each.value.resource_group_name].location
 
-  name = format("vm-b%s-%s", each.value.bastion_host_type, each.value.username)
+  name = substr(format("vm-b%s-%s", each.value.bastion_host_type, each.value.username), 0, 15)
   size = local.user_common["windows_vm_size"]
 
   network_interface_ids = [azurerm_network_interface.network_interface[format("%s-%s-utility", each.value.username, each.value.suffix)].id]
 
   admin_username = each.value.username
   admin_password = local.user_common["password"]
-  computer_name  = format("vm-b%s-%s", each.value.bastion_host_type, each.value.username)
+  computer_name  = substr(format("vm-b%s-%s", each.value.bastion_host_type, each.value.username), 0, 15)
 
   os_disk {
     name                 = format("disk-os-%s-%s", each.value.bastion_host_type, each.value.username)

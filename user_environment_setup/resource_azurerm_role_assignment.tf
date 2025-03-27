@@ -3,7 +3,7 @@ resource "azurerm_role_assignment" "role_assignment" {
 
   scope                = azurerm_resource_group.resource_group[each.value.resource_group_name].id
   role_definition_name = each.value.role_definition_name
-  principal_id         = azuread_user.user[each.value.username].id
+  principal_id         = azuread_user.user[each.value.username].object_id
 }
 
 output "role_assignments" {

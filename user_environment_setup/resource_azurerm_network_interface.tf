@@ -1,3 +1,11 @@
+locals {
+  ip_configurations = [
+    {
+      name    = "ipconfig1"
+      primary = true
+    }
+  ]
+}
 resource "azurerm_network_interface" "network_interface" {
   for_each = local.bastion_host_support ? {
     for name, user in local.user_resource_groups_subnets_map : name => user
@@ -14,7 +22,7 @@ resource "azurerm_network_interface" "network_interface" {
 
   dynamic "ip_configuration" {
 
-    for_each = each.value.ip_configurations
+    for_each = local.ip_configurations
     content {
       #name                          = ip_configuration.value.name
       #primary                       = lookup(ip_configuration.value, "primary", false)
