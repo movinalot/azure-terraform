@@ -7,7 +7,7 @@ $WinRmBasic = "@{Basic=`"true`"}"
 winrm set winrm/config/service/Auth $WinRmBasic 
 
 Write-Host "Open Firewall Ports"
-netsh advfirewall firewall add rule enter code here name="Windows Remote Management (HTTP-In)" dir=in action=allow protocol=TCP localport=5985
+netsh advfirewall firewall add rule name="Windows Remote Management (HTTP-In)" dir=in action=allow protocol=TCP localport=5985
 
 netsh advfirewall firewall add rule name="Windows Remote Management (HTTPS-In)" dir=in action=allow protocol=TCP localport=5986
 
