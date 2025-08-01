@@ -17,3 +17,11 @@ output "user_resource_group_roles_list" {
 output "user_resource_group_roles_map" {
   value = var.enable_output ? local.user_resource_group_roles_map : null
 }
+
+resource "azurerm_role_assignment" "group_role_assignment" {
+  for_each = local.group_roles
+
+  scope                = each.value.scope
+  role_definition_name = each.value.role_definition_name
+  principal_id         = each.value.principal_id
+}

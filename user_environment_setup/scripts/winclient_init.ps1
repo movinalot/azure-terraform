@@ -11,6 +11,8 @@ netsh advfirewall firewall add rule name="Windows Remote Management (HTTP-In)" d
 
 netsh advfirewall firewall add rule name="Windows Remote Management (HTTPS-In)" dir=in action=allow protocol=TCP localport=5986
 
-Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6
-Invoke-WebRequest "https://fortinetcloudinttraining.blob.core.windows.net/files-staging/EDR-Lab-Files.zip" -UseBasicParsing -OutFile EDR-Lab-Files.zip
-Move-Item EDR-Lab-Files.zip C:/Users/Public/Documents/EDR-Lab-Files.zip
+$Path = $env:TEMP
+$Installer = "chrome_installer.exe"
+Invoke-WebRequest "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -OutFile "$Path\$Installer"
+Start-Process -FilePath "$Path\$Installer" -Args "/silent /install" -Verb RunAs -Wait
+Remove-Item "$Path\$Installer"

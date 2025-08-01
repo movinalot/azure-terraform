@@ -5,11 +5,11 @@ locals {
 %{if local.per_user_service_principal == true}
 ${format(
   "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
-  split("-", user.resource_group_name)[0],
+  user.username,
   var.user_password,
   user.resource_group_name,
-  user.username,
-  format("vm-b%s-%s", split("-", user.username)[1], split("-", user.resource_group_name)[0]),
+  format("bastion_%s_%s", user.bastion_host_type, user.resource_group_name),
+  format("vm-b%s-%s", user.bastion_host_type, user.username),
   azuread_service_principal.service_principal[split("-", user.resource_group_name)[0]].object_id,
   azuread_application_password.application_password[split("-", user.resource_group_name)[0]].value,
   data.azurerm_subscription.subscription.subscription_id,
@@ -19,7 +19,7 @@ ${format(
 %{if local.per_user_service_principal == false}
 ${format(
   "\"%s\",\"%s\"",
-  user["user"].display_name,
+  user.username,
   var.user_password
   )}
 %{endif}

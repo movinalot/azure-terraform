@@ -11,7 +11,6 @@ resource "azurerm_public_ip" "public_ip_service_access" {
 
   allocation_method = "Static"
   sku               = "Standard"
-
 }
 
 output "public_ips_service_access" {

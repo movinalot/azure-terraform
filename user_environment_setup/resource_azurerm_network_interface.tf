@@ -6,6 +6,7 @@ locals {
     }
   ]
 }
+
 resource "azurerm_network_interface" "network_interface" {
   for_each = local.bastion_host_support ? {
     for name, user in local.user_resource_groups_subnets_map : name => user

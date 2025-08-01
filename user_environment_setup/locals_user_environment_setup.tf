@@ -6,25 +6,25 @@ locals {
   bastion_host_support = true
 
   # Should the Bastion host virtual network be the same address space for each user or sequential 
-  sequential_vnet_address_space = true
+  sequential_vnet_address_space = false
 
   # Should a Service Principal be created per user
   per_user_service_principal      = true
   per_user_service_principal_role = "Owner"
 
   # Training Group name
-  training_group_name = "${local.user_prefix}-training-group"
+  training_group_name = "${local.user_prefix}-us-xperts-2025"
 
-  # Azure P1 false, P2 true
-  security_group_ad_role_support = false
+  # Azure P1/P2 needed for true
+  security_group_ad_role_support = true
 
   # Entra ID roles assigned to the Training Group members (the user accounts) 
   directory_roles = {
     "Application Administrator" = {
       display_name = "Application Administrator"
     }
-    "Global Reader" = {
-      display_name = "Global Reader"
+    "Directory Readers" = {
+      display_name = "Directory Readers"
     }
   }
 
@@ -34,8 +34,8 @@ locals {
       role_id             = local.security_group_ad_role_support ? azuread_directory_role.directory_role["Application Administrator"].object_id : ""
       principal_object_id = local.security_group_ad_role_support ? azuread_group.group[local.training_group_name].object_id : ""
     }
-    "Global Reader" = {
-      role_id             = local.security_group_ad_role_support ? azuread_directory_role.directory_role["Global Reader"].object_id : ""
+    "Directory Readers" = {
+      role_id             = local.security_group_ad_role_support ? azuread_directory_role.directory_role["Directory Readers"].object_id : ""
       principal_object_id = local.security_group_ad_role_support ? azuread_group.group[local.training_group_name].object_id : ""
     }
   }
@@ -142,6 +142,22 @@ locals {
       resource_group_name  = item[0]["resource_group_name"],
       role_definition_name = item[1],
       username             = item[0]["username"]
+    }
+  }
+
+  # Group roles that will be assigned to the Group
+  group_role_definition_names = ["Managed Application Contributor Role", "Managed Identity Operator"]
+
+  group_roles = {
+    Managed_Application_Contributor_Role = {
+      scope                = data.azurerm_subscription.subscription.id
+      role_definition_name = "Managed Application Contributor Role"
+      principal_id         = azuread_group.group[local.training_group_name].object_id
+    }
+    Managed_Identity_Operator = {
+      scope                = data.azurerm_subscription.subscription.id
+      role_definition_name = "Managed Identity Operator"
+      principal_id         = azuread_group.group[local.training_group_name].object_id
     }
   }
 
